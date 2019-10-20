@@ -3,26 +3,18 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Document</title>
+  <title>{{block 'title'}}默认标题{{/block}}</title>
   <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
-  {{ block 'header'}} {{ /block}}
+  {{block 'head'}}{{/block}}
 </head>
 
 <body>
-
-  {{ include './header.html' }}
-
-  {{ block 'content'}} <h1> 默认内容 </h1> {{ /block }}
-
-
-
-  {{ include './footer.html' }}
-
-
+  {{include '../_partials/header.html'}}
+  {{block 'body'}}{{/block}}
+  {{include '../_partials/footer.html'}}
   <script src="/node_modules/jquery/dist/jquery.js"></script>
   <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
-
-  {{ block 'script'}} {{ /block}}
+  {{block 'script'}}{{/block}}
 </body>
 
 </html>
