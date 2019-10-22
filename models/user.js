@@ -1,5 +1,8 @@
 var mongoose = require('mongoose')
 
+// 连接数据库
+mongoose.connect('mongodb://localhost/test', { useNewUrlParser: true })
+
 // 设计文档结构（设计Schema）
 var Schema = mongoose.Schema
 

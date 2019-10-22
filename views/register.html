@@ -52,7 +52,14 @@
         data: formData,
         dataType: 'json',
         success: function (data) {
-          console.log(data)
+          var err_code = data.err_code
+          if (err_code === 0) {
+            window.alert('注册成功')
+          } else if (err_code === 1) {
+            window.alert('用户名或昵称已存在')
+          } else if (err_code === 500) {
+            window.alert('服务器忙，请稍后重试！')
+          }
         }
       })
     })

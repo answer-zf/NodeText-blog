@@ -18,7 +18,7 @@ app.set('views', path.join(__dirname, './views/')) // 默认就是 ./views 目�
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-// r路由挂载到 app 中
+// 路由挂载到 app 中
 app.use(router)
 
 app.listen(3000, function() {
