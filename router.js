@@ -5,14 +5,47 @@ var md5 = require('blueimp-md5')
 var router = express.Router()
 
 router.get('/', function(req, res) {
-  res.render('index.html')
+  console.log(req.session.user)
+  res.render('index.html', {
+    user: req.session.user
+  })
 })
 
 router.get('/login', function(req, res) {
   res.render('login.html')
 })
 
-router.post('/login', function(req, res) {})
+router.post('/login', function(req, res) {
+  var body = req.body
+  User.findOne(
+    {
+      email: body.email,
+      password: md5(md5(body.password))
+    },
+    function(err) {
+      if (err) {
+        return res.status(500).json({
+          err_code: 500,
+          message: err.message
+        })
+      }
+
+      if (!data) {
+        return res.status(200).json({
+          err_code: 1,
+          message: 'Email or password is invalid.'
+        })
+      }
+
+      req.session.user = data
+
+      res.status(200).json({
+        err_code: 0,
+        message: 'OK'
+      })
+    }
+  )
+})
 
 router.get('/register', function(req, res) {
   res.render('register.html')
@@ -50,6 +83,7 @@ router.post('/register', function(req, res) {
           message: 'Email or nickname already exists'
         })
       }
+
       // 对密码进行加密
       body.password = md5(md5(body.password))
       new User(body).save(function(err, data) {
@@ -59,14 +93,24 @@ router.post('/register', function(req, res) {
             message: 'Server error'
           })
         }
-      })
 
-      res.status(200).json({
-        err_code: 0,
-        message: 'OK'
+        // 注册成功，使用 session 记录用户 登录 状态
+        req.session.user = data
+
+        // 异步请求服务端重定向无效
+        // res.redirect('/')
+        res.status(200).json({
+          err_code: 0,
+          message: 'OK'
+        })
       })
     }
   )
+})
+
+router.get('/logout', function(req, res) {
+  req.session.user = null
+  res.redirect('/login')
 })
 
 module.exports = router
